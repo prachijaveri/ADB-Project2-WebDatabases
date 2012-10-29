@@ -13,15 +13,6 @@ public class BingSearch
 	//TO SAVE THE XML FILE RETURNED BY BING
 	private String content="";
 	
-	//TO SAVE TITLES OF TOP 10 RESULTS
-	//private Elements title;
-	
-	//TO SAVE DESCRIPTION OF THE TOP 10 RESULTS
-	//private Elements description;
-	
-	//TO SAVE THE URL OF THE TOP 10 RESULTS
-	//private Elements siteurl;
-	
 	//SAVES THE URL OF THE RELEVANT DOCUMENT TO GET THE CONTENT OF THAT WEBPAGE
 	private URL result_url;
 	
@@ -43,10 +34,10 @@ public class BingSearch
 		return accountKey;
 	}
 	
-	//TO GET THE XML FILE CONTAINING THE TOP 10 RESULTS OF THE QUERY
-	void getXMLResult(String query) throws IOException
+	void getDocuments(String query) throws IOException
 	{
 		bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Web?Query=%27"+query+"%27&$top=10&$format=Atom"; 
+		bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%27site%3afifa.com%20premiership%27&$top=10&$format=Atom";
 		accountKey = "cl+CGEC5TNbMOpk+QOGLlbwLXAihfnwscJZRQdmNDDE=";
 		
 		byte[] accountKeyBytes = Base64.encodeBase64((accountKey + ":" + accountKey).getBytes());
@@ -60,5 +51,6 @@ public class BingSearch
 		byte[] contentRaw = new byte[urlConnection.getContentLength()];
 		inputStream.read(contentRaw);
 		content = new String(contentRaw);
+		System.out.println(content);
 	}
 }

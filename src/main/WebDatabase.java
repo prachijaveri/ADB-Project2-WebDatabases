@@ -67,9 +67,6 @@ public class WebDatabase
 		System.out.println();
 		System.out.println("----------------------------------------------------------");
 		System.out.println();
-		
-		
-		
 		in.close();
 	}
 }
