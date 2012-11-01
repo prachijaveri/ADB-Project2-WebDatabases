@@ -47,7 +47,6 @@ public class Classification
 				{
 					System.out.println(e);
 				}
-//				System.out.println(category_name +"\t"+node.isChild(category_name)); 
 				if(node.isChild(category_name))
 				{
 					node.increaseTotal(no_docs);

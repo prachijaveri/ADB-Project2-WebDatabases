@@ -68,6 +68,7 @@ public class BingSearch
 		for(int i =0;i<4;i++)
 		{
 			Documents d= new Documents(title.get(i).text(),description.get(i).text(),siteurl.get(i).text());
+			docs_for_query.add(d);
 		}
 		if(total.isEmpty())
 		{
