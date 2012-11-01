@@ -41,7 +41,7 @@ public class Classification
 				{
 					LinkedList<Documents> docs_for_query = new LinkedList<Documents>();
 					no_docs = BingSearch.getDocumentNumber(WebDatabase.web_database_url, query, docs_for_query);
-					node.setDocumentsForQuery(i,docs_for_query);
+					node.addDocuments(docs_for_query);
 				}
 				catch(Exception e)
 				{

@@ -34,4 +34,11 @@ public class Documents
 	{
 		return url;
 	}
+	
+	boolean equals(Documents d)
+	{
+		if(title.equalsIgnoreCase(d.getTitle()) && description.equalsIgnoreCase(d.getDescription()) && url.equalsIgnoreCase(d.getUrl()))
+			return true;
+		return false;
+	}
 }
