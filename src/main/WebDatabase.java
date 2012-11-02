@@ -22,7 +22,7 @@ public class WebDatabase
 		do
 		{
 			System.out.println("Enter the url for the Web database");
-			web_database_url="nba.com";
+			web_database_url="diabetes.org";
 			//web_database_url=in.nextLine();
 		}while(checkUrl());
 		System.out.println();
@@ -50,6 +50,8 @@ public class WebDatabase
 		classification_tree=new Classification();
 		classification_tree.executeQueries();
 		System.out.println("\n\n\nFINAL ANSWER");
+//		for(int i=0;i<database_classification.size();i++)
+//			System.err.println(database_classification.get(i).getCategoryName());
 		displayClassification();
 	}
 	
@@ -58,6 +60,7 @@ public class WebDatabase
 		
 		for(int i = database_classification.size()-1;i>=0;i--)
 		{
+			System.err.println(database_classification.get(i).getCategoryName());
 			if(containsChildOf(database_classification.get(i)))
 			{
 				continue;
@@ -82,13 +85,16 @@ public class WebDatabase
 	
 	private static boolean containsChildOf(Category node)
 	{
-		if(node.getParent() == null)
+		LinkedList<Category> children = node.getChildren();
+		if(children.size() == 0)
 			return false;
-		String parent_name = node.getParent().getCategoryName();
 		for(int i=0;i<database_classification.size();i++)
 		{
-			if(database_classification.get(i).getCategoryName().equalsIgnoreCase(parent_name))
-				return true;
+			for(int j=0;j<children.size();j++)
+			{
+				if(database_classification.get(i).getCategoryName().equalsIgnoreCase(children.get(j).getCategoryName()))
+					return true;
+			}
 		}
 		return false;
 	}

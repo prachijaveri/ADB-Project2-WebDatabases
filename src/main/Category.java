@@ -30,6 +30,10 @@ public class Category
 		if(p != null)
 			p.addChild(this);
 	}
+	LinkedList<Category> getChildren()
+	{
+		return children;
+	}
 	
 	Category getParent()
 	{
