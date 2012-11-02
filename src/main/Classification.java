@@ -1,6 +1,7 @@
 package main;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 public class Classification 
 {	
@@ -39,8 +40,10 @@ public class Classification
 				double no_docs=0.0;
 				try
 				{
-					LinkedList<Documents> docs_for_query = new LinkedList<Documents>();
-					no_docs = BingSearch.getDocumentNumber(WebDatabase.web_database_url, query, docs_for_query);
+					Vector result = BingSearch.getDocumentNumber(WebDatabase.web_database_url, query);
+					@SuppressWarnings("unchecked")
+					LinkedList<Documents> docs_for_query = (LinkedList<Documents>)result.elementAt(0);
+					no_docs =Double.parseDouble(result.elementAt(1) +"");
 					node.addDocuments(docs_for_query);
 				}
 				catch(Exception e)

@@ -9,7 +9,7 @@ public class Category
 {
 	private String category_name;
 	private LinkedList<String> list_of_queries=new LinkedList<String>();
-	private LinkedList<Documents> list_of_documents;
+	private LinkedList<Documents> list_of_documents= new LinkedList<Documents>();
 	private double specificity = -1;
 	private double coverage = -1;
 	private Category parent;

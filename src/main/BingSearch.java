@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
@@ -47,9 +48,12 @@ public class BingSearch
 	}
 
 	
-	static int getDocumentNumber(String web_database_url , String query, LinkedList<Documents> docs_for_query ) throws IOException
+	@SuppressWarnings("unchecked")
+	static Vector getDocumentNumber(String web_database_url , String query ) throws IOException
 	{
-		bingUrl = "https://api.datamarket.azure.com/Data`.ashx/Bing/SearchWeb/v1/Composite?Query=%27site%3a"+web_database_url+"%20"+query+"%27&$top=10&$format=Atom"; 
+		@SuppressWarnings("rawtypes")
+		Vector result = new Vector();
+		bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%27site%3a"+web_database_url+"%20"+query+"%27&$top=10&$format=Atom"; 
 		accountKey = "cl+CGEC5TNbMOpk+QOGLlbwLXAihfnwscJZRQdmNDDE=";
 		byte[] accountKeyBytes = Base64.encodeBase64((accountKey + ":" + accountKey).getBytes());
 		String accountKeyEnc = new String(accountKeyBytes);
@@ -65,19 +69,22 @@ public class BingSearch
 		title = doc.select("d|title");
 		description = doc.select("d|description");
 		siteurl = doc.select("d|url");
+		LinkedList<Documents> docs_for_query= new LinkedList<Documents>();
 		for(int i =0;i<4;i++)
 		{
 			Documents d= new Documents(title.get(i).text(),description.get(i).text(),siteurl.get(i).text());
 			docs_for_query.add(d);
 		}
+		result.add(docs_for_query);
 		if(total.isEmpty())
 		{
 			System.out.println("EMPTY");
-			return 0;
+			result.add(0);
 		}
 		else
 		{
-			return Integer.parseInt(total.text());
+			result.add(total.text());
 		}
+		return result;
 	}
 }
