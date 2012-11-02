@@ -22,7 +22,7 @@ public class WebDatabase
 		do
 		{
 			System.out.println("Enter the url for the Web database");
-			web_database_url="diabetes.org";
+			web_database_url="cancer.org";
 			//web_database_url=in.nextLine();
 		}while(checkUrl());
 		System.out.println();
@@ -60,7 +60,7 @@ public class WebDatabase
 		
 		for(int i = database_classification.size()-1;i>=0;i--)
 		{
-			System.err.println(database_classification.get(i).getCategoryName());
+//			System.err.println(database_classification.get(i).getCategoryName());
 			if(containsChildOf(database_classification.get(i)))
 			{
 				continue;
