@@ -50,16 +50,48 @@ public class WebDatabase
 		classification_tree=new Classification();
 		classification_tree.executeQueries();
 		System.out.println("\n\n\nFINAL ANSWER");
-		for(int i=0;i<database_classification.size();i++)
-		{
-			System.err.println(database_classification.get(i).getCategoryName());
-		}
-		
-//		System.out.println("--------------------------------------------------");
-//		System.out.println(classification_tree);
-//		System.out.println("--------------------------------------------------");
+		displayClassification();
 	}
 	
+	private static void displayClassification()
+	{
+		
+		for(int i = database_classification.size()-1;i>=0;i--)
+		{
+			if(containsChildOf(database_classification.get(i)))
+			{
+				continue;
+			}
+			else
+			{
+				Category node = database_classification.get(i);
+				String r="";
+				do
+				{
+					if(r.equals(""))
+						r=node.getCategoryName();
+					else
+						r=node.getCategoryName()+" ---> "+r;
+					node=node.getParent();
+				}while(node != null);
+				System.out.println(r);
+			}
+			
+		}
+	}
+	
+	private static boolean containsChildOf(Category node)
+	{
+		if(node.getParent() == null)
+			return false;
+		String parent_name = node.getParent().getCategoryName();
+		for(int i=0;i<database_classification.size();i++)
+		{
+			if(database_classification.get(i).getCategoryName().equalsIgnoreCase(parent_name))
+				return true;
+		}
+		return false;
+	}
 	private static boolean checkUrl()
 	{
 		try

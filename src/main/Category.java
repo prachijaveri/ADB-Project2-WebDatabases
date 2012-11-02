@@ -9,6 +9,7 @@ public class Category
 {
 	private String category_name;
 	private LinkedList<String> list_of_queries=new LinkedList<String>();
+	private LinkedList<Integer> number_of_documents_for_query = new LinkedList<Integer>();
 	private LinkedList<Documents> list_of_documents= new LinkedList<Documents>();
 	private double specificity = -1;
 	private double coverage = -1;
@@ -30,6 +31,10 @@ public class Category
 			p.addChild(this);
 	}
 	
+	Category getParent()
+	{
+		return parent;
+	}
 	void addChild(Category c)
 	{
 		children.add(c);
@@ -105,6 +110,7 @@ public class Category
 	
 	void addDocuments(LinkedList<Documents> docs_for_query)
 	{
+		int cnt=0;
 		for(int i=0;i<docs_for_query.size();i++)
 		{
 			boolean flag = true;
@@ -117,8 +123,12 @@ public class Category
 				}
 			}
 			if(flag)
+			{
 				list_of_documents.add(docs_for_query.get(i));
+				cnt++;
+			}
 		}
+		number_of_documents_for_query.add(cnt);
 	}
 	void setCoverage(double n)
 	{

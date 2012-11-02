@@ -48,10 +48,9 @@ public class BingSearch
 	}
 
 	
-	@SuppressWarnings("unchecked")
-	static Vector getDocumentNumber(String web_database_url , String query ) throws IOException
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	static Vector getDocumentsFromBing(String web_database_url , String query ) throws IOException
 	{
-		@SuppressWarnings("rawtypes")
 		Vector result = new Vector();
 		bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%27site%3a"+web_database_url+"%20"+query+"%27&$top=10&$format=Atom"; 
 		accountKey = "cl+CGEC5TNbMOpk+QOGLlbwLXAihfnwscJZRQdmNDDE=";
@@ -70,7 +69,7 @@ public class BingSearch
 		description = doc.select("d|description");
 		siteurl = doc.select("d|url");
 		LinkedList<Documents> docs_for_query= new LinkedList<Documents>();
-		for(int i =0;i<4;i++)
+		for(int i =0;i<4 && i<title.size();i++)
 		{
 			Documents d= new Documents(title.get(i).text(),description.get(i).text(),siteurl.get(i).text());
 			docs_for_query.add(d);

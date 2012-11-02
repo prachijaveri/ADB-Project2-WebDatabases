@@ -14,6 +14,7 @@ public class Classification
 		root.setSpecificity(1.0);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void executeQueries()
 	{
 		System.out.println("Classifying ..... ");
@@ -26,13 +27,14 @@ public class Classification
 //			{
 //			System.out.print(nodes.get(i).getCategoryName() +" , ");
 //			}
-//			System.out.println();
+			System.out.println();
 			Category node = nodes.removeFirst();
-			System.out.println("...");
+			System.out.print("...");
 			node.setTotalNoDocs(0);
 			WebDatabase.database_classification.add(node);
 			for(int i=0;i<node.getNumberOfQueries();i++)
 			{
+				System.out.print(".");
 				String query=node.getQueryAtIndex(i).trim();
 				int index = query.indexOf(" ");
 				String category_name = query.substring(0,index).trim().toLowerCase();
@@ -40,8 +42,7 @@ public class Classification
 				double no_docs=0.0;
 				try
 				{
-					Vector result = BingSearch.getDocumentNumber(WebDatabase.web_database_url, query);
-					@SuppressWarnings("unchecked")
+					Vector result = BingSearch.getDocumentsFromBing(WebDatabase.web_database_url, query);
 					LinkedList<Documents> docs_for_query = (LinkedList<Documents>)result.elementAt(0);
 					no_docs =Double.parseDouble(result.elementAt(1) +"");
 					node.addDocuments(docs_for_query);
@@ -69,6 +70,7 @@ public class Classification
 			}
 			for(int i=0;i<node.getNumberOfChildren();i++)
 			{
+				System.out.print(".");
 				Category c =node.getChildByIndex(i);
 				c.setCoverage(c.getTotalNoDocs());
 				c.setSpecificity(node.getSpecificity() * c.getTotalNoDocs() / node.getTotalNoDocs());
@@ -78,7 +80,7 @@ public class Classification
 				}
 			}	
 		}
-		System.out.println("Classification Completed");
+		System.out.println("\nClassification Completed");
 	}
 	public String toString()
 	{
