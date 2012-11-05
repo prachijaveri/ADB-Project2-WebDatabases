@@ -3,10 +3,13 @@ package main;
 import java.util.LinkedList;
 import java.util.Vector;
 
+
 public class Classification 
 {	
+	//SAVES THE ROOT NODE OF THE CLASSIFICATION TREE
 	Category root;
 	
+	//CONTRUCTOR USED TO INITIALIZE THE ROOT CATEGORY FOR THE TREE
 	Classification()
 	{
 		root = new Category();
@@ -14,19 +17,17 @@ public class Classification
 		root.setSpecificity(1.0);
 	}
 	
+	//THIS METHOD CREATES THE CLASSIFICATION TREE AND CALCULATES THE SPECIFICITY AND COVERAGE AT EACH NODE IN THE TREE TO DECIDE THE CLSSIFIFCATION OD THE URL
+	//IT OBTAINS THE NUMBER OF DOCUMENTS FROM THE BINGSEARCH.JAVA AND USES THIS TO CALCULATE BOTH THE PARAMETERS
+	//IT EXECUTES THE QUERIES AT EACH NODE TO DECIDE THE SUB-CATEGORIZATION AT THAT NODE
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	void executeQueries()
+	void startClassification()
 	{
 		System.out.println("Classifying ..... ");
 		LinkedList<Category> nodes = new LinkedList<Category>();
 		nodes.add(root);
 		while(! nodes.isEmpty())
 		{
-//			System.out.print("\t-----> ");
-//			for(int i=0;i<nodes.size();i++)
-//			{
-//			System.out.print(nodes.get(i).getCategoryName() +" , ");
-//			}
 			System.out.println();
 			Category node = nodes.removeFirst();
 			System.out.print("...");
@@ -34,7 +35,6 @@ public class Classification
 			WebDatabase.database_classification.add(node);
 			for(int i=0;i<node.getNumberOfQueries();i++)
 			{
-				System.out.print(".");
 				String query=node.getQueryAtIndex(i).trim();
 				int index = query.indexOf(" ");
 				String category_name = query.substring(0,index).trim().toLowerCase();
@@ -70,10 +70,13 @@ public class Classification
 			}
 			for(int i=0;i<node.getNumberOfChildren();i++)
 			{
-				System.out.print(".");
 				Category c =node.getChildByIndex(i);
 				c.setCoverage(c.getTotalNoDocs());
 				c.setSpecificity(node.getSpecificity() * c.getTotalNoDocs() / node.getTotalNoDocs());
+				System.out.println("Category : "+c.getCategoryName());
+				System.out.println("\t Specificity : "+c.getSpecificity());
+				System.out.println("\t Coverage : "+c.getCoverage());
+				System.out.println();
 				if(c.getCoverage() >= WebDatabase.user_coverage_threshold && c.getSpecificity() >= WebDatabase.user_specificity_threshold)
 				{	
 					nodes.add(c);
@@ -82,6 +85,8 @@ public class Classification
 		}
 		System.out.println("\nClassification Completed");
 	}
+	
+	//PRINTS THE ENITRE CLASSIFICATION TREE
 	public String toString()
 	{
 		String s="";

@@ -13,27 +13,29 @@ import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+//THIS CLASS IS USED TO OBTAIN THE NUMBER OF DOCUMENTS AND THE TOP 4 RESULT FOR EACH OF THE QUERY WHICH IS PASSS AS A PARAMETER TO IT
+
 public class BingSearch
 {
 	//TO SAVE THE XML FILE RETURNED BY BING
 	private static String content="";
 	
-	//TO SAVE TITLES OF TOP 10 RESULTS
+	//TO SAVE THE TOTAL NUMBER OF DOCUMENTS RETRIEVED FOR THE QUERY
 	private static Elements total;
 	
-	//TO SAVE TITLES OF TOP 10 RESULTS
+	//TO SAVE TITLES OF RETRIEVED DOCUMENTD OUT OF WHICH A MAXIMUM OF 4 ARE USED
 	private static Elements title;
 		
-	//TO SAVE DESCRIPTION OF THE TOP 10 RESULTS
+	//TO SAVE DESCRIPTION OF RETRIEVED DOCUMENTD OUT OF WHICH A MAXIMUM OF 4 ARE USED
 	private static Elements description;
 		
-	//TO SAVE THE URL OF THE TOP 10 RESULTS
+	//TO SAVE URLS OF RETRIEVED DOCUMENTD OUT OF WHICH A MAXIMUM OF 4 ARE USED
 	private static Elements siteurl;
 	
-	// TO SAVE THE URL USED TO GET THE RESULTS
+	// TO SAVE THE URL THAT IS PASSED IN ORDER TO GET THE RESULTS FROM BING
 	private static String bingUrl="";
 	
-	//TO SAVE THE ACCOUNT KEY
+	//TO SAVE THE ACCOUNT KEY FOR BING
 	private static String accountKey="";
 	
 	//RETURNS THE BING URL USED FOR THE QUERY
@@ -42,12 +44,14 @@ public class BingSearch
 		return bingUrl;
 	}
 	
+	//RETURNS THE BING ACCOUNT KEY USED
 	String getAccountKey()
 	{
 		return accountKey;
 	}
 
-	
+	//THIS FUNCTION RETURNS A LIST OF THE TOP 4 DOUMENTS RETRIEVED AND THE TOTAL NUMBER OF DOCUMENTS RETRIEVED FOR THE QUERY PASSES AS THE PARAMETER
+	//IT RETRIEVES THE DOCUMENTS FOR THE SPECIFIED WEB DATABASE 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static Vector getDocumentsFromBing(String web_database_url , String query ) throws IOException
 	{

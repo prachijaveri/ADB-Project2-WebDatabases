@@ -1,18 +1,29 @@
 package main;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class WebDatabase 
-{
+{	
+	//TO SAVE THE URL OF THE DATABASE TO BE CATEGORIZED
 	protected static String web_database_url="";
+	
+	//TO SAVE THE THRESHOLD VALUE FOR SPECIFICITY AS MENTIONED BY THE USER
 	protected static double user_specificity_threshold = -1;
+	
+	//TO SAVE THE THRESHOLD VALUE FOR COVERAGE AS MENTIONED BY USER
 	protected static double user_coverage_threshold = -1;
+	
+	//TO STORE THE CLASSIFICATION TREE
 	private static Classification classification_tree;
+	
+	//TO STORE THE OUTPUT OF THE CLASSIFICATION
 	protected static LinkedList<Category> database_classification=new LinkedList<Category>();
 	
-	public static void main(String arg[])
+	//THIS TAKES THE INPUT FROM THE USER AND THEN CALLS OTHER FUNCTIONS FOR CLASSIFYING THE DATABASE AND GENERATING THE CONTENT SUMMARY
+	public static void main(String arg[]) throws IOException
 	{
 		Scanner in = new Scanner(System.in);
 		System.out.println("----------------------------------------------------------");
@@ -22,8 +33,7 @@ public class WebDatabase
 		do
 		{
 			System.out.println("Enter the url for the Web database");
-			web_database_url="cancer.org";
-			//web_database_url=in.nextLine();
+			web_database_url=in.nextLine();
 		}while(checkUrl());
 		System.out.println();
 		System.out.println("----------------------------------------------------------");
@@ -31,8 +41,7 @@ public class WebDatabase
 		do
 		{
 			System.out.println("Enter the Specificity Threshold");
-			user_specificity_threshold=0.6;
-			//user_specificity_threshold=in.nextDouble();
+			user_specificity_threshold=in.nextDouble();
 		}while(checkSpecificity());
 		System.out.println();
 		System.out.println("----------------------------------------------------------");
@@ -40,27 +49,42 @@ public class WebDatabase
 		do
 		{
 			System.out.println("Enter the Coverage Threshold");
-			user_coverage_threshold=100;
-			//user_coverage_threshold=in.nextDouble();
+			user_coverage_threshold=in.nextDouble();
 		}while(checkCoverage());
 		System.out.println();
 		System.out.println("----------------------------------------------------------");
 		System.out.println();
 		in.close();
 		classification_tree=new Classification();
-		classification_tree.executeQueries();
-		System.out.println("\n\n\nFINAL ANSWER");
-//		for(int i=0;i<database_classification.size();i++)
-//			System.err.println(database_classification.get(i).getCategoryName());
+		classification_tree.startClassification();
+		System.out.println();
+		System.out.println("----------------------------------------------------------");
+		System.out.println();		
+		System.out.println("Classification for the Url : "+web_database_url);
 		displayClassification();
+		System.out.println();
+		System.out.println("----------------------------------------------------------");
+		System.out.println();
+		getContentSummary();
 	}
 	
+	//METHOD TO GET THE CONTENT SUMMARY FOR THE NODES THAT HAVE BEEN CLASSIFIED
+	private static void getContentSummary()throws IOException
+	{
+		for(int i = database_classification.size()-1;i>=0;i--)
+		{
+			Category node = database_classification.get(i);
+			if(node.getNumberOfChildren() > 0)
+				node.getWordSetForAll();
+		}
+	}
+	
+	//METHOD TO DISPLAY THE OUTPUT OF THE CLASSIFICATION
 	private static void displayClassification()
 	{
 		
 		for(int i = database_classification.size()-1;i>=0;i--)
 		{
-//			System.err.println(database_classification.get(i).getCategoryName());
 			if(containsChildOf(database_classification.get(i)))
 			{
 				continue;
@@ -83,6 +107,7 @@ public class WebDatabase
 		}
 	}
 	
+	//IT CHECKS WHETHER THE LIST OF CLASSIFIED CATEGORIES CAONTAINS A CHILD OF THE CATEGORY PASSES AS THE PARAMETER
 	private static boolean containsChildOf(Category node)
 	{
 		LinkedList<Category> children = node.getChildren();
@@ -98,6 +123,8 @@ public class WebDatabase
 		}
 		return false;
 	}
+	
+	// METHOD TO CHECK IF URL IS VALID
 	private static boolean checkUrl()
 	{
 		try
@@ -111,6 +138,7 @@ public class WebDatabase
 		}
 	}
 	
+	//METHOD TO CHECK IF SPECIFICITY IS IN THE DESIRED RANGE
 	private static boolean checkSpecificity()
 	{
 		if(user_specificity_threshold >= 0 && user_specificity_threshold <= 1)
@@ -118,11 +146,11 @@ public class WebDatabase
 		return true;
 	}
 	
+	//METHOD TO CHECK IF COVERAGE IS IN DESIRED RANGE
 	private static boolean checkCoverage()
 	{
 		if(user_coverage_threshold >= 1)
 			return false;
 		return true;
 	}
-	
 }
